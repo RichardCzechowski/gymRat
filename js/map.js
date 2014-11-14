@@ -110,6 +110,7 @@ $(document).ready(function(){
     initialize();
   });
 
+
   function initialize() {
     var styledMap = new google.maps.StyledMapType(styles, {name: "Gym-Map"});
 
@@ -120,7 +121,7 @@ $(document).ready(function(){
         mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
       },
       center: userLocation,
-      zoom: 15
+      zoom: 13
     });
 
     map.mapTypes.set('map_style', styledMap);
@@ -157,16 +158,21 @@ $(document).ready(function(){
       infowindow.open(map, this);
     });
   }
-
+  $('a[href="#map"]').on('shown.bs.tab', function(e){
+    google.maps.event.trigger(map, 'resize');
+  });
   google.maps.event.addDomListener(window, 'load');
-
 
   //END GOOGLE MAPS //////
 
   function  initHandlebars(gymResults){
-    console.log(gymResults.slice(0,5 ));
+    console.log(gymResults[0].photos[0].getUrl({'maxWidth' : 200, 'maxHeight' : 200}))
+    for (i=0; i<gymResults.length; i++){
+    if(gymResults[i].hasOwnProperty('photos'))
+      {gymResults[i].photo = gymResults[i].photos[0].getUrl({'maxWidth' : 200, 'maxHeight' : 200})}
+    }
+    console.log(gymResults.slice(0,5));
     var locations = {location : gymResults.slice(0,5)};
-    console.log(locations.location[1].name)
     var source   = $("#entry-template").html();
     var template = Handlebars.compile(source);
     $('#handlebars').append(template(locations));
