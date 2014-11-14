@@ -1,6 +1,5 @@
 $(document).ready(function(){
   apiKey= "AIzaSyBoupBlVFMHSqx-IJT2KXSiYHA40T4pNVg";
-
   var map;
   var infowindow;
   var userLoc = {};
@@ -110,8 +109,6 @@ $(document).ready(function(){
     initialize();
   });
 
-  $('#mapTab').on('click', initialize);
-
   function initialize() {
     var styledMap = new google.maps.StyledMapType(styles, {name: "Gym-Map"});
 
@@ -136,12 +133,18 @@ $(document).ready(function(){
     infowindow = new google.maps.InfoWindow();
     var service = new google.maps.places.PlacesService(map);
     service.nearbySearch(request, callback);
+
+    $('a[href="#map"]').on('shown.bs.tab', function(e){
+      var currCenter = map.getCenter();
+      google.maps.event.trigger(map, 'resize');
+      map.setCenter(currCenter);
+    });
+    google.maps.event.addDomListener(window, 'load');
   }
 
   function callback(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < results.length; i++) {
-        console.log(JSON.stringify(results[i]));
         createMarker(results[i]);
       }
     }
@@ -160,18 +163,14 @@ $(document).ready(function(){
       infowindow.open(map, this);
     });
   }
-  $('a[href="#map"]').on('shown.bs.tab', function(e){
-    google.maps.event.trigger(map, 'resize');
-  });
-  google.maps.event.addDomListener(window, 'load');
 
   //END GOOGLE MAPS //////
 
   function  initHandlebars(gymResults){
     console.log(gymResults[0].photos[0].getUrl({'maxWidth' : 200, 'maxHeight' : 200}))
     for (i=0; i<gymResults.length; i++){
-    if(gymResults[i].hasOwnProperty('photos'))
-      {gymResults[i].photo = gymResults[i].photos[0].getUrl({'maxWidth' : 1000, 'maxHeight' : 1000})}
+      if(gymResults[i].hasOwnProperty('photos'))
+        {gymResults[i].photo = gymResults[i].photos[0].getUrl({'maxWidth' : 1000, 'maxHeight' : 1000})}
     }
     console.log(gymResults.slice(0,5));
     var locations = {location : gymResults.slice(0,5)};
