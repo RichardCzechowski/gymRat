@@ -12,3 +12,7 @@ html,body{height:100%;}
     display:none;
   }
 }
+
+.panel-body > img{
+  overflow: hide;
+}

@@ -28,7 +28,7 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="col-xs-3 active"><a href="#location" aria-controls="location" role="tab" data-toggle="tab"><i class="fa fa-check-circle"></i><nav>Check In</nav></a></li>
-          <li role="presentation" class="col-xs-3"><a href="#map" aria-controls="map" role="tab" data-toggle="tab"><i class="fa fa-map-marker"></i><nav>Map</nav></a></li>
+          <li role="presentation" class="col-xs-3"><a id="mapTab"  href="#map" aria-controls="map" role="tab" data-toggle="tab"><i class="fa fa-map-marker"></i><nav>Map</nav></a></li>
           <li role="presentation" class="col-xs-3"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-eye"></i><nav>Profile</nav></a></li>
           <li role="presentation" class="col-xs-3"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><i class="fa fa-cog"></i><nav>Settings</nav></a></li>
         </ul>
@@ -40,11 +40,17 @@
             <script id="entry-template" type="text/x-handlebars-template">
               <div class="panel panel-default text-center">
                 {{#each location}}
-                <div class="panel-heading">
+                <div id="{{place_id}}1" class="panel-heading">
                   <h3 class="panel-title">{{name}}</h3>
                 </div>
-                <div class="panel-body">
-                  <img class="col-xs-3" src="{{photo}}"><address class="col-xs-9">{{vicinity}}</address>
+                <div id={{place_id}} class="panel-body">
+                  <img class="col-xs-3" src="
+                  {{#if photo}}
+                  {{photo}}
+                  {{else}}
+                  {{icon}}
+                  {{/if}}">
+                  <address class="col-xs-9">{{vicinity}}</address>
                 </div>
                 {{/each}}
               </div>
@@ -66,6 +72,7 @@
     <script src="js/plugins.js"></script>
     <script src="js/boot_init.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/checkIn.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBoupBlVFMHSqx-IJT2KXSiYHA40T4pNVg&sensor=true&libraries=places">
       type="text/javascript">
     </script>
